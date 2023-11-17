@@ -428,5 +428,12 @@
     // echo commonTest();
 
     // echo __DIR__;
+
+    // $test = 123;
+    // echo $test;
+    // exit();
+    // $test2 = 456;
+    // echo $test2;
+    // phpinfo();
     ?>
 </body>
