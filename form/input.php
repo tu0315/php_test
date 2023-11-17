@@ -1,10 +1,12 @@
 <?php
+
 if (!empty($_SESSION)) {
     echo ('<pre>');
     var_dump($_SESSION);
     echo ('</pre>');
 }
 
+// sessionの開始。sessionはGETやPOSTと違い、残しておける
 session_start();
 
 // フレームオプションを無効化
@@ -40,6 +42,7 @@ if (!empty($_POST['btn_submit'])) {
         <?php
         // csrfで使用するトークンを設定
         if (!isset($_SESSION['csrfToken'])) {
+            echo 'csrfTokenセットされてません';
             $csrfToken = bin2hex(random_bytes(32));
             $_SESSION['csrfToken'] = $csrfToken;
         }
@@ -57,16 +60,12 @@ if (!empty($_POST['btn_submit'])) {
                                                     } ?>">
             <br>
             <input type="submit" name="btn_confirm" value="確認する">
-            <input type="hidden" name="token" value="<?php echo $token; ?>">
-            <!-- ■好きなスポーツ(複数選択可)
-            <input type="checkbox" name="sports[]" value="野球">野球
-            <input type="checkbox" name="sports[]" value="サッカー">サッカー
-            <input type="checkbox" name="sports[]" value="テニス">テニス -->
+            <input type="hidden" name="csrf" value="<?php echo $token; ?>">
         </form>
     <?php endif; ?>
 
     <?php if ($pageFlag === 1) : ?>
-        <?php if ($_POST['token'] === $_SESSION['csrfToken']) :  ?>
+        <?php if ($_POST['csrf'] === $_SESSION['csrfToken']) :  ?>
             <form method="POST" action="input.php">
                 ■氏名
                 <?php echo h($_POST['your_name']); ?>
@@ -78,13 +77,13 @@ if (!empty($_POST['btn_submit'])) {
                 <input type="submit" name="btn_submit" value="送信する">
                 <input type="hidden" name="your_name" value="<?php echo h($_POST['your_name']); ?>">
                 <input type="hidden" name="email" value="<?php echo h($_POST['email']); ?>">
-                <input type="hidden" name="token" value="<?php echo $_POST['csrf']; ?>">
+                <input type="hidden" name="csrf" value="<?php echo h($_POST['csrf']); ?>">
             </form>
         <?php endif; ?>
     <?php endif; ?>
 
     <?php if ($pageFlag === 2) : ?>
-        <?php if ($_POST['token'] === $_SESSION['csrfToken']) :  ?>
+        <?php if ($_POST['csrf'] === $_SESSION['csrfToken']) :  ?>
             送信が完了しました。
             <?php unset($_SESSION['csrfToken']); ?>
         <?php endif; ?>
