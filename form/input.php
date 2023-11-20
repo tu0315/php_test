@@ -98,7 +98,7 @@ if (!empty($_POST['btn_submit'])) {
                             <input type="radio" class="form_check_input" id="gender1" name="gender" value="0" <?php if (isset($_POST['gender']) && $_POST['gender'] === '0') {
                                                                                                                     echo 'checked';
                                                                                                                 } ?>><label class="form_check_label" for="gender1">男性</label>
-                            <input type="radio" class="form_check_input" id="gender2" name="gender" value="0" <?php if (isset($_POST['gender']) && $_POST['gender'] === '0') {
+                            <input type="radio" class="form_check_input" id="gender2" name="gender" value="0" <?php if (isset($_POST['gender']) && $_POST['gender'] === '1') {
                                                                                                                     echo 'checked';
                                                                                                                 } ?>><label class="form_check_label" for="gender2">女性</label>
                         </div>
@@ -189,6 +189,7 @@ if (!empty($_POST['btn_submit'])) {
                 <input type="submit" name="back" value="戻る">
                 <input type="submit" name="btn_submit" value="送信する">
                 <input type="hidden" name="your_name" value="<?php echo h($_POST['your_name']); ?>">
+                <input type="hidden" name="email" value="<?php echo h($_POST['email']); ?>">
                 <input type="hidden" name="url" value="<?php echo h($_POST['url']); ?>">
                 <input type="hidden" name="gender" value="<?php echo h($_POST['gender']); ?>">
                 <input type="hidden" name="age" value="<?php echo h($_POST['age']); ?>">
@@ -200,6 +201,10 @@ if (!empty($_POST['btn_submit'])) {
 
     <?php if ($pageFlag === 2) : ?>
         <?php if ($_POST['csrf'] === $_SESSION['csrfToken']) :  ?>
+            <?php
+            require '../mainte/insert.php';
+            insertContact($_POST);
+            ?>
             送信が完了しました。
             <?php unset($_SESSION['csrfToken']); ?>
         <?php endif; ?>
